@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Toaster, toast } from 'react-hot-toast';
+import { useDebounce } from 'use-debounce';
 import styles from './App.module.css';
 import SearchBar from '../SearchBar/SearchBar';
 import MovieGrid from '../MovieGrid/MovieGrid';
@@ -11,6 +12,7 @@ import MovieModal from '../MovieModal/MovieModal';
 
 export default function App() {
   const [query, setQuery] = useState('');
+  const [debouncedQuery] = useDebounce(query, 500);
   const [movies, setMovies] = useState<Movie[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -20,20 +22,21 @@ export default function App() {
     setSelectedMovie(movie);
   };
 
-  const handleSearch = (query: string) => {
-    setQuery(query); // тільки оновлюємо query
+  const handleSearch = (newQuery: string) => {
+    if (newQuery === query) return;
+    setQuery(newQuery);
   };
 
   useEffect(() => {
-    if (!query) return;
+    if (!debouncedQuery) return;
 
     const load = async () => {
       try {
         setIsLoading(true);
         setError(false);
-        setMovies([]); // очищення старих фільмів
+        setMovies([]);
 
-        const results = await fetchMovies(query);
+        const results = await fetchMovies(debouncedQuery);
 
         if (results.length === 0) {
           toast.error('No movies found for your request.');
@@ -49,7 +52,7 @@ export default function App() {
     };
 
     load();
-  }, [query]);
+  }, [debouncedQuery]);
 
   return (
     <div className={styles.app}>
