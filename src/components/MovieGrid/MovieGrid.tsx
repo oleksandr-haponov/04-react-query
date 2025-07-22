@@ -1,9 +1,9 @@
-import type { Movie } from '../../types/movie'
-import styles from './MovieGrid.module.css'
+import type { Movie } from '../../types/movie';
+import styles from './MovieGrid.module.css';
 
 export interface MovieGridProps {
-  movies: Movie[]
-  onSelect: (movie: Movie) => void
+  movies: Movie[];
+  onSelect: (movie: Movie) => void;
 }
 
 export default function MovieGrid({ movies, onSelect }: MovieGridProps) {
@@ -23,5 +23,5 @@ export default function MovieGrid({ movies, onSelect }: MovieGridProps) {
         </li>
       ))}
     </ul>
-  )
+  );
 }

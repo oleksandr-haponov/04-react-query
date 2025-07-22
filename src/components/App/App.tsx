@@ -20,22 +20,20 @@ export default function App() {
   const [page, setPage] = useState(1);
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
 
-  const {
-    data,
-    isLoading,
-    isError,
-    isSuccess,
-  } = useQuery({
+  const { data, isLoading, isError, isSuccess } = useQuery<
+    { movies: Movie[]; totalPages: number },
+    Error
+  >({
     queryKey: ['movies', debouncedQuery, page],
     queryFn: () => fetchMovies(debouncedQuery, page),
     enabled: !!debouncedQuery,
-    keepPreviousData: true,
+    placeholderData: (prev) => prev,
   });
 
   const handleSearch = (newQuery: string) => {
     if (newQuery === query) return;
     setQuery(newQuery);
-    setPage(1); // скидаємо до першої сторінки при новому пошуку
+    setPage(1);
   };
 
   const handlePageChange = ({ selected }: { selected: number }) => {
@@ -56,27 +54,27 @@ export default function App() {
 
       {isSuccess && data.movies.length > 0 && (
         <>
-         {data.totalPages > 1 && (
-  <ReactPaginate
-    pageCount={data.totalPages}
-    pageRangeDisplayed={5}
-    marginPagesDisplayed={1}
-    onPageChange={handlePageChange}
-    forcePage={page - 1}
-    containerClassName={styles.pagination}
-    activeClassName={styles.active}
-    nextLabel="→"
-    previousLabel="←"
-  />
-)}
+          {data.totalPages > 1 && (
+            <ReactPaginate
+              pageCount={data.totalPages}
+              pageRangeDisplayed={5}
+              marginPagesDisplayed={1}
+              onPageChange={handlePageChange}
+              forcePage={page - 1}
+              containerClassName={styles.pagination}
+              activeClassName={styles.active}
+              nextLabel="→"
+              previousLabel="←"
+            />
+          )}
 
-<MovieGrid movies={data.movies} onSelect={handleMovieSelect} />
+          <div className={styles.gridWrapper}>
+            <MovieGrid movies={data.movies} onSelect={handleMovieSelect} />
+          </div>
         </>
       )}
 
-      {selectedMovie && (
-        <MovieModal movie={selectedMovie} onClose={() => setSelectedMovie(null)} />
-      )}
+      {selectedMovie && <MovieModal movie={selectedMovie} onClose={() => setSelectedMovie(null)} />}
 
       <Toaster position="top-right" />
     </div>
