@@ -1,12 +1,12 @@
 .app {
-    padding: 0 16px;
+  padding: 0 16px;
 }
 
 .pagination {
   display: flex;
   justify-content: center;
   gap: 6px;
-  margin: 16px 0;
+  margin: 16px 0 24px;
   list-style: none;
   padding: 0;
 }
@@ -29,6 +29,10 @@
 
 .active {
   background-color: #0a66c2;
-  color: white;
+  color: white !important;
   font-weight: bold;
+}
+
+.active a {
+  color: white !important;
 }

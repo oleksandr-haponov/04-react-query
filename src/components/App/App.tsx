@@ -56,21 +56,21 @@ export default function App() {
 
       {isSuccess && data.movies.length > 0 && (
         <>
-          <MovieGrid movies={data.movies} onSelect={handleMovieSelect} />
+         {data.totalPages > 1 && (
+  <ReactPaginate
+    pageCount={data.totalPages}
+    pageRangeDisplayed={5}
+    marginPagesDisplayed={1}
+    onPageChange={handlePageChange}
+    forcePage={page - 1}
+    containerClassName={styles.pagination}
+    activeClassName={styles.active}
+    nextLabel="→"
+    previousLabel="←"
+  />
+)}
 
-          {data.totalPages > 1 && (
-            <ReactPaginate
-              pageCount={data.totalPages}
-              pageRangeDisplayed={5}
-              marginPagesDisplayed={1}
-              onPageChange={handlePageChange}
-              forcePage={page - 1}
-              containerClassName={styles.pagination}
-              activeClassName={styles.active}
-              nextLabel="→"
-              previousLabel="←"
-            />
-          )}
+<MovieGrid movies={data.movies} onSelect={handleMovieSelect} />
         </>
       )}
 
