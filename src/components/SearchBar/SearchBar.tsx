@@ -30,7 +30,7 @@ export default function SearchBar({ onSubmit }: SearchBarProps) {
           Powered by TMDB
         </a>
 
-        <form className={styles.form} action={handleFormAction} method="post">
+        <form className={styles.form} action={handleFormAction}>
           <input
             className={styles.input}
             type="text"
