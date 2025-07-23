@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import styles from './SearchBar.module.css';
 import toast from 'react-hot-toast';
 
@@ -7,8 +6,6 @@ export interface SearchBarProps {
 }
 
 export default function SearchBar({ onSubmit }: SearchBarProps) {
-  const [query, setQuery] = useState('');
-
   const handleFormAction = async (formData: FormData) => {
     const trimmedQuery = formData.get('query')?.toString().trim();
 
@@ -18,7 +15,7 @@ export default function SearchBar({ onSubmit }: SearchBarProps) {
     }
 
     onSubmit(trimmedQuery);
-    setQuery('');
+    // форма скидає input автоматично, бо інпут неконтрольований
   };
 
   return (
@@ -41,8 +38,6 @@ export default function SearchBar({ onSubmit }: SearchBarProps) {
             autoComplete="off"
             placeholder="Search movies..."
             autoFocus
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
           />
           <button className={styles.button} type="submit">
             Search
